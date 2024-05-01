@@ -1,0 +1,8 @@
+{
+  "resources": {
+    "includes": [
+      {"pattern" : "org/apache/commons/exec/CommandLine.class"},
+      {"pattern" : "org/apache/batik/transcoder/Transcoder.class"}
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "com.github.javaparser.ast.body.FieldDeclaration",
+    "allPublic": true,
+    "allDeclaredConstructors": true,
+    "allDeclaredMethods": true,
+    "allDeclaredFields": true
+  },
+  {
+    "name" : "com.github.javaparser.ast.expr.VariableDeclarationExpr",
+    "allPublic" : true,
+    "allDeclaredConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allDeclaredFields" : true
+  }
+]
