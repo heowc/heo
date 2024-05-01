@@ -1,5 +1,11 @@
 name: CI
-on: [push]
+on:
+  push:
+    branches:
+      - main
+    tags-ignore:
+      - heo-*
+  pull_request:
 jobs:
   ci:
     runs-on: ubuntu-latest
