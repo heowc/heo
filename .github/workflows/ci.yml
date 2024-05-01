@@ -8,6 +8,8 @@ on:
   pull_request:
 jobs:
   ci:
+    permissions:
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
