@@ -1,0 +1,38 @@
+name: CI
+on: [push]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'      # See 'Options' section below for all supported versions
+          distribution: 'graalvm' # See 'Options' section below for all available distributions
+      - name: Check Gradle Version
+        run: |
+          chmod +x gradlew
+          ./gradlew --version
+      - name: Test task with Gradle Wrapper
+        run: |
+          ./gradlew --parallel --max-workers=4 build
+      - name: Create report file
+        if: success()
+        run: |
+          sudo apt install -y graphviz
+          JAR_FILE=$(ls -al ./build/libs/ | tail -1 | awk '{print $9}')
+          java -jar ./build/libs/$JAR_FILE -d $(pwd) -p com.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
+      - name: Create comment
+        if: success() && github.event.pull_request.number != ''
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-path: ${{ github.event.pull_request.number }}.png
+      - name: If failure then upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          path: '*/build/reports/tests'
+          name: test-reports
+          retention-days: 7
