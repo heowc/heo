@@ -3,12 +3,10 @@ plugins {
     id 'maven-publish'
 }
 
-group = 'dev.heowc.heo.gradle'
-
 gradlePlugin {
     plugins {
         heoPlugin {
-            id = 'dev.heowc.heo.gradle'
+            id = 'dev.heowc.heo'
             implementationClass = 'dev.heowc.heo.gradle.HeoPlugin'
             displayName = 'heo gradle plugin'
         }
@@ -20,10 +18,6 @@ dependencies {
     implementation localGroovy()
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
 task copyJar(type: Copy) {
     from "${rootDir}/heo-cli/build/libs/heo-cli-${version}.jar"
     into "${projectDir}/src/main/resources"
@@ -33,3 +27,15 @@ task copyJar(type: Copy) {
 }
 
 tasks.processResources.dependsOn(copyJar)
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            artifactId = 'heo-plugin'
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
