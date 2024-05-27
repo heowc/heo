@@ -1,0 +1,35 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+}
+
+group = 'dev.heowc.heo.gradle'
+
+gradlePlugin {
+    plugins {
+        heoPlugin {
+            id = 'dev.heowc.heo.gradle'
+            implementationClass = 'dev.heowc.heo.gradle.HeoPlugin'
+            displayName = 'heo gradle plugin'
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+task copyJar(type: Copy) {
+    from "${rootDir}/heo-cli/build/libs/heo-cli-${version}.jar"
+    into "${projectDir}/src/main/resources"
+    rename { String fileName ->
+        fileName.replace("heo-cli-${version}.jar", 'heo-cli.jar')
+    }
+}
+
+tasks.processResources.dependsOn(copyJar)

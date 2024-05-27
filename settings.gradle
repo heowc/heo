@@ -1,1 +1,14 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+    }
+}
 rootProject.name = 'heo'
+
+include 'heo-core'
+include 'heo-cli'
+include 'heo-gradle-plugin'
+
+include 'it:gradle-plugin'
+

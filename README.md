@@ -15,11 +15,11 @@ This tool relies on [graphviz](https://graphviz.org/). Please install graphviz f
 - `o`: Enter the destination file path.
 
 ```bash
-java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p com.heowc.heo
+java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p dev.heowc.heo
 ```
 
 ```text
-$ java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p com.heowc.heo
+$ java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p dev.heowc.heo
  __   __  _______  _______
 |  | |  ||       ||       |
 |  |_|  ||    ___||   _   |
@@ -28,7 +28,7 @@ $ java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p com.heowc.heo
 |   _   ||   |___ |       |
 |__| |__||_______||_______|
 
-2024-05-01T17:23:52.031+09:00  INFO 72099 --- [           main] c.h.h.c.l.a.ModuleLoaderService          : Loading com.heowc.heo from ./
+2024-05-01T17:23:52.031+09:00  INFO 72099 --- [           main] c.h.h.c.l.a.ModuleLoaderService          : Loading dev.heowc.heo from ./
 2024-05-01T17:23:52.044+09:00  INFO 72099 --- [           main] c.h.h.c.a.a.DependencyAnalysisService    : Analysing project dependencies for modules. size=0
 2024-05-01T17:23:52.445+09:00  INFO 72099 --- [           main] c.h.h.c.v.ReportVisualizationService     : Report file created  (file:///Users/heowc/Projects/heo/result-1714551832030.png)
 ```

@@ -1,0 +1,9 @@
+plugins {
+    id 'java'
+    id 'dev.heowc.heo.gradle' version '0.0.2-SNAPSHOT'
+}
+
+heo {
+    directoryPath = "${rootDir}/heo-core"
+    prefixPackage = "dev.heowc.heo.core"
+}
