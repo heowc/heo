@@ -24,7 +24,7 @@ jobs:
           ./gradlew --version
       - name: Test task with Gradle Wrapper
         run: |
-          ./gradlew :heo-cli:build
+          ./gradlew :heo-cli:boorJar
           ./gradlew :heo-gradle-plugin:publishToMavenLocal
           ./gradlew --parallel --max-workers=4 build
       - name: Create report file
