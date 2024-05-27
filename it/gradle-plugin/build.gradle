@@ -1,7 +1,19 @@
-plugins {
-    id 'java'
-    id 'dev.heowc.heo' version '0.0.2-SNAPSHOT'
+//if (project.hasProperty('localPlugin')) {
+//
+//}
+
+
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath "dev.heowc.heo:heo-plugin:0.0.2-SNAPSHOT"
+    }
 }
+
+apply plugin: 'java'
+apply plugin: 'dev.heowc.heo'
 
 heo {
     directoryPath = "${rootDir}/heo-core"
