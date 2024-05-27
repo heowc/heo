@@ -1,6 +1,6 @@
-//if (project.hasProperty('localPlugin')) {
-//
-//}
+if (!project.hasProperty('localPlugin')) {
+    return
+}
 
 
 buildscript {
