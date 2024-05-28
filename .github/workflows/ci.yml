@@ -22,6 +22,9 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew --version
+      - name: Install Graphviz
+        run: |
+          sudo apt install -y graphviz
       - name: Test
         run: |
           ./gradlew --parallel --max-workers=4 build
@@ -32,7 +35,6 @@ jobs:
       - name: Create self report file
         if: success()
         run: |
-          sudo apt install -y graphviz
           JAR_FILE=$(ls -al ./heo-cli/build/libs/ | tail -1 | awk '{print $9}')
           java -jar ./heo-cli/build/libs/$JAR_FILE -d $(pwd) -p dev.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
       - name: Upload self report file
