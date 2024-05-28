@@ -18,11 +18,6 @@ public class ReportVisualizationService {
 
     private static final Logger logger = LoggerFactory.getLogger(ReportVisualizationService.class);
 
-    public ReportVisualizationService() {
-        Graphviz.noHeadless();
-//        Graphviz.useEngine(new GraphvizJdkEngine());
-    }
-
     public void createFile(String report, String destination) {
         try {
             final File file = new File(destination);
