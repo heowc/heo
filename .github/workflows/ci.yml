@@ -30,7 +30,7 @@ jobs:
         run: |
           sudo apt install -y graphviz
           JAR_FILE=$(ls -al ./heo-cli/build/libs/ | tail -1 | awk '{print $9}')
-          java -jar ./build/libs/$JAR_FILE -d $(pwd) -p dev.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
+          java -jar ./heo-cli/build/libs/$JAR_FILE -d $(pwd) -p dev.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
       - name: Plugin Test
         run: |
           ./gradlew :heo-gradle-plugin:publishToMavenLocal
