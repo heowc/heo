@@ -27,6 +27,7 @@ task copyJar(type: Copy) {
 }
 
 tasks.processResources.dependsOn(copyJar)
+tasks.copyJar.dependsOn(":heo-cli:bootJar")
 
 publishing {
     publications {
