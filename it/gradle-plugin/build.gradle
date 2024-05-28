@@ -1,14 +1,13 @@
-if (project.hasProperty('localPlugin')) {
-    buildscript {
-        repositories {
-            mavenLocal()
-        }
-        dependencies {
-            classpath "dev.heowc.heo:heo-plugin:0.0.2-SNAPSHOT"
-        }
+buildscript {
+    repositories {
+        mavenLocal()
     }
+    dependencies {
+        classpath "dev.heowc.heo:heo-gradle-plugin:0.0.2-SNAPSHOT"
+    }
+}
 
-    apply plugin: 'java'
+if (project.hasProperty('localPlugin')) {
     apply plugin: 'dev.heowc.heo'
 
     heo {
