@@ -1,21 +1,19 @@
-if (!project.hasProperty('localPlugin')) {
-    return
-}
-
-
-buildscript {
-    repositories {
-        mavenLocal()
+if (project.hasProperty('localPlugin')) {
+    buildscript {
+        repositories {
+            mavenLocal()
+        }
+        dependencies {
+            classpath "dev.heowc.heo:heo-plugin:0.0.3-SNAPSHOT"
+        }
     }
-    dependencies {
-        classpath "dev.heowc.heo:heo-plugin:0.0.2-SNAPSHOT"
+
+    apply plugin: 'java'
+    apply plugin: 'dev.heowc.heo'
+
+    heo {
+        directoryPath = "${rootDir}/heo-core"
+        prefixPackage = "dev.heowc.heo.core"
     }
-}
 
-apply plugin: 'java'
-apply plugin: 'dev.heowc.heo'
-
-heo {
-    directoryPath = "${rootDir}/heo-core"
-    prefixPackage = "dev.heowc.heo.core"
 }
