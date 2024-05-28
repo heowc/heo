@@ -4,7 +4,7 @@ if (project.hasProperty('localPlugin')) {
             mavenLocal()
         }
         dependencies {
-            classpath "dev.heowc.heo:heo-plugin:0.0.3-SNAPSHOT"
+            classpath "dev.heowc.heo:heo-plugin:0.0.2-SNAPSHOT"
         }
     }
 
