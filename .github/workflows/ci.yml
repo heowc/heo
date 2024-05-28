@@ -25,17 +25,17 @@ jobs:
       - name: Test
         run: |
           ./gradlew --parallel --max-workers=4 build
-      - name: Create report file
+      - name: Plugin Test
+        run: |
+          ./gradlew :heo-gradle-plugin:publishToMavenLocal
+          ./gradlew -PlocalPlugin :it:gradle-plugin:heoReport
+      - name: Create self report file
         if: success()
         run: |
           sudo apt install -y graphviz
           JAR_FILE=$(ls -al ./heo-cli/build/libs/ | tail -1 | awk '{print $9}')
           java -jar ./heo-cli/build/libs/$JAR_FILE -d $(pwd) -p dev.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
-      - name: Plugin Test
-        run: |
-          ./gradlew :heo-gradle-plugin:publishToMavenLocal
-          ./gradlew -PlocalPlugin :it:gradle-plugin:heoReport
-      - name: Create self test report
+      - name: Upload self report file
         if: success() && github.event.pull_request.number != ''
         uses: actions/upload-artifact@v4
         with:
