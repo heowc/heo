@@ -4,11 +4,15 @@ plugins {
 }
 
 gradlePlugin {
+    website = 'https://github.com/heowc/heo'
+    vcsUrl = 'https://github.com/heowc/heo.git'
     plugins {
         heoPlugin {
             id = 'dev.heowc.heo'
-            implementationClass = 'dev.heowc.heo.gradle.HeoPlugin'
             displayName = 'heo gradle plugin'
+            description = 'heo-cli is provided as a gradle plugin'
+            tags.set(['heo', 'static analysis'])
+            implementationClass = 'dev.heowc.heo.gradle.HeoPlugin'
         }
     }
 }
@@ -37,5 +41,6 @@ publishing {
     }
     repositories {
         mavenLocal()
+        gradlePluginPortal()
     }
 }
