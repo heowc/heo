@@ -29,7 +29,7 @@ jobs:
         if: success()
         run: |
           sudo apt install -y graphviz
-          JAR_FILE=$(ls -al ./build/libs/ | tail -1 | awk '{print $9}')
+          JAR_FILE=$(ls -al ./heo-cli/build/libs/ | tail -1 | awk '{print $9}')
           java -jar ./build/libs/$JAR_FILE -d $(pwd) -p dev.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
       - name: Plugin Test
         run: |
