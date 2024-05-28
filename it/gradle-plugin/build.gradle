@@ -3,7 +3,9 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath "dev.heowc.heo:heo-gradle-plugin:0.0.2-SNAPSHOT"
+        if (project.hasProperty('localPlugin')) {
+            classpath "dev.heowc.heo:heo-gradle-plugin:0.0.2-SNAPSHOT"
+        }
     }
 }
 
@@ -14,5 +16,5 @@ if (project.hasProperty('localPlugin')) {
         directoryPath = "${rootDir}/heo-core"
         prefixPackage = "dev.heowc.heo.core"
     }
-
 }
+
