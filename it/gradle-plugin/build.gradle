@@ -4,7 +4,7 @@ buildscript {
     }
     dependencies {
         if (project.hasProperty('localPlugin')) {
-            classpath "dev.heowc.heo:heo-gradle-plugin:0.0.2-SNAPSHOT"
+            classpath "dev.heowc.heo:heo-gradle-plugin:${version}"
         }
     }
 }
