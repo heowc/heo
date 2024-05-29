@@ -1,6 +1,6 @@
 plugins {
     id 'java-gradle-plugin'
-    id 'maven-publish'
+    id 'com.gradle.plugin-publish' version '1.2.1'
 }
 
 gradlePlugin {
@@ -30,8 +30,8 @@ task copyJar(type: Copy) {
     }
 }
 
-tasks.processResources.dependsOn(copyJar)
-tasks.copyJar.dependsOn(":heo-cli:bootJar")
+tasks.build.dependsOn(copyJar)
+tasks.copyJar.dependsOn(":heo-cli:build")
 
 publishing {
     publications {
