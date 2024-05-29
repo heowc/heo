@@ -1,0 +1,52 @@
+plugins {
+    id 'java-gradle-plugin'
+    id 'com.gradle.plugin-publish' version '1.2.1'
+}
+
+gradlePlugin {
+    website = 'https://github.com/heowc/heo'
+    vcsUrl = 'https://github.com/heowc/heo.git'
+    plugins {
+        heoPlugin {
+            id = 'dev.heowc.heo'
+            displayName = 'heo gradle plugin'
+            description = 'heo-cli is provided as a gradle plugin'
+            tags.set(['heo', 'static analysis'])
+            implementationClass = 'dev.heowc.heo.gradle.HeoPlugin'
+        }
+    }
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+}
+
+task copyJar(type: Copy) {
+    dependsOn ':heo-cli:jar'
+    mustRunAfter ':heo-gradle-plugin:sourcesJar'
+
+    from "${rootDir}/heo-cli/build/libs/heo-cli-${version}.jar"
+    into "${projectDir}/src/main/resources"
+    rename { String fileName ->
+        fileName.replace("heo-cli-${version}.jar", 'heo-cli.jar')
+    }
+}
+
+clean {
+    doLast {
+        project.delete("${projectDir}/src/main/resources/heo-cli.jar")
+    }
+}
+
+processResources {
+    dependsOn copyJar
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

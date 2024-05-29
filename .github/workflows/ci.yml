@@ -22,16 +22,22 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew --version
-      - name: Test task with Gradle Wrapper
-        run: |
-          ./gradlew --parallel --max-workers=4 build
-      - name: Create report file
-        if: success()
+      - name: Install Graphviz
         run: |
           sudo apt install -y graphviz
-          JAR_FILE=$(ls -al ./build/libs/ | tail -1 | awk '{print $9}')
-          java -jar ./build/libs/$JAR_FILE -d $(pwd) -p com.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
-      - name: Create self test report
+      - name: Test
+        run: |
+          ./gradlew --parallel --max-workers=4 build
+      - name: Plugin Test
+        run: |
+          ./gradlew :heo-gradle-plugin:publishToMavenLocal
+          ./gradlew -PlocalPlugin :it:gradle-plugin:heoReport
+      - name: Create self report file
+        if: success()
+        run: |
+          JAR_FILE=$(ls -al ./heo-cli/build/libs/ | tail -1 | awk '{print $9}')
+          java -jar ./heo-cli/build/libs/$JAR_FILE -d $(pwd) -p dev.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
+      - name: Upload self report file
         if: success() && github.event.pull_request.number != ''
         uses: actions/upload-artifact@v4
         with:
