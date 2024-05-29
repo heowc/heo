@@ -23,6 +23,9 @@ dependencies {
 }
 
 task copyJar(type: Copy) {
+    dependsOn ':heo-cli:jar'
+    mustRunAfter ':heo-gradle-plugin:sourcesJar'
+
     from "${rootDir}/heo-cli/build/libs/heo-cli-${version}.jar"
     into "${projectDir}/src/main/resources"
     rename { String fileName ->
@@ -30,8 +33,15 @@ task copyJar(type: Copy) {
     }
 }
 
-tasks.build.dependsOn(copyJar)
-tasks.copyJar.dependsOn(":heo-cli:build")
+clean {
+    doLast {
+        project.delete("${projectDir}/src/main/resources/heo-cli.jar")
+    }
+}
+
+processResources {
+    dependsOn copyJar
+}
 
 publishing {
     publications {

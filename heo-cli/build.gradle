@@ -31,3 +31,8 @@ dependencyManagement {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+bootJar {
+    // To make the executable jar file depend on the Gradle plugin
+    mustRunAfter ':heo-gradle-plugin:copyJar'
+}
