@@ -1,25 +1,25 @@
-# heo
+# heo-cli
 
 Tools to analyze package-level structure and visualize it
 
-# install
+## install
 
 Download the latest jar file from the [release](https://github.com/heowc/heo/releases)
 
 This tool relies on [graphviz](https://graphviz.org/). Please install graphviz first.
 
-# usage
+## usage
 
 - `d`: Enter the directory path.
 - `p`: Enter the package path.
 - `o`: Enter the destination file path.
 
 ```bash
-java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p dev.heowc.heo
+java -jar heo-cli-0.0.2.jar -d /Users/heowc/Projects/heo -p dev.heowc.heo
 ```
 
 ```text
-$ java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p dev.heowc.heo
+$ java -jar heo-cli-0.0.2.jar -d /Users/heowc/Projects/heo-core -p dev.heowc.heo.core
  __   __  _______  _______
 |  | |  ||       ||       |
 |  |_|  ||    ___||   _   |
@@ -37,8 +37,28 @@ $ java -jar heo-0.0.1.jar -d /Users/heowc/Projects/heo -p dev.heowc.heo
 
 ![image sample](./docs/sample.png)
 
+# heo-gradle-plugin
+
+A gradle plugin is provided for easier use.
+
+## usage
+
+```groovy
+plugins {
+    id "dev.heowc.deo" version "0.0.2"
+}
+
+heo {
+    directoryPath = "${rootDir}/heo-core" // The default is to use the root path.
+    prefixPackage = "dev.heowc.heo.core" // The default is group.
+    // destination // By default, the `reports/heo/index.png` image file is created under the build path.
+}
+```
+
+Please note that there is a [test](it/gradle-plugin/build.gradle) for the plugin.
+
 # What's next
 
 - Support native
   - See https://github.com/oracle/graal/issues/8273
-- Support plugin (gradle, maven etc)
+- Support plugin (~~gradle~~, maven etc)
