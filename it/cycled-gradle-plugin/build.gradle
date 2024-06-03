@@ -14,15 +14,16 @@ if (project.hasProperty('localPlugin')) {
     apply plugin: 'java'
 
     heo {
-        directoryPath = "${rootDir}/heo-core"
-        prefixPackage = "dev.heowc.heo.core"
+        directoryPath = "${rootDir}/it/cycled-gradle-plugin"
+        prefixPackage = "dev.heowc.heo.it.cycled"
+        failureOnCycles = true
     }
 
     test {
         dependsOn 'pluginTest'
     }
 
-    tasks.register('pluginTest') {
+    tasks.register('pluginTest')  {
         doLast {
             var failure = false
             try {
@@ -30,10 +31,10 @@ if (project.hasProperty('localPlugin')) {
             } catch (Exception e) {
                 failure = true
             }
-            if (failure) {
-                throw new IllegalStateException("The task did not succeed")
+            if (!failure) {
+                throw new IllegalStateException("The task did not fail")
             }
         }
     }
-}
 
+}

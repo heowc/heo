@@ -19,4 +19,8 @@ public class DependencyAnalysisResult {
     public CycleDetector<String, DomainEdge> getCycleDetector() {
         return cycleDetector;
     }
+
+    public boolean hasCycle() {
+        return cycleDetector.detectCycles();
+    }
 }

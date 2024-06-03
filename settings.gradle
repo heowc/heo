@@ -11,4 +11,4 @@ include 'heo-cli'
 include 'heo-gradle-plugin'
 
 include 'it:gradle-plugin'
-
+include 'it:cycled-gradle-plugin'
