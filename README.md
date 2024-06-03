@@ -12,7 +12,8 @@ This tool relies on [graphviz](https://graphviz.org/). Please install graphviz f
 
 - `d`: Enter the directory path.
 - `p`: Enter the package path.
-- `o`: Enter the destination file path.
+- `o`: (optional) Enter the destination file path.
+- `failure-on-cycles`: (optional) Enter whether to fail if a cycle occurs between modules.
 
 ```bash
 java -jar heo-cli-0.0.2.jar -d /Users/heowc/Projects/heo -p dev.heowc.heo
@@ -52,6 +53,8 @@ heo {
     directoryPath = "${rootDir}/heo-core" // The default is to use the root path.
     prefixPackage = "dev.heowc.heo.core" // The default is group.
     // destination // By default, the `reports/heo/index.png` image file is created under the build path.
+    // failure-on-cycles // The default option is disabled, 
+                         // and if enabled the task will fail if a cycle occurs.
 }
 ```
 
