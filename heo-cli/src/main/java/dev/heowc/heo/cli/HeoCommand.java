@@ -18,10 +18,11 @@ public class HeoCommand {
     @Command(command = "heo")
     public void doHeo(@Option(shortNames = 'd', required = true) String directory,
                       @Option(shortNames = 'p', required = true) String prefixPackage,
-                      @Option(shortNames = 'o') String destination) {
+                      @Option(shortNames = 'o') String destination,
+                      @Option(longNames = "failure-on-cycles", defaultValue = "false") boolean failureOnCycles) {
         if (StringUtils.isBlank(destination)) {
             destination = String.format("result-%s.png", System.currentTimeMillis());
         }
-        service.command(directory, prefixPackage, destination);
+        service.command(directory, prefixPackage, destination, new HeoConfig(failureOnCycles));
     }
 }

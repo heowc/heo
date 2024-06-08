@@ -7,11 +7,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.tasks.JavaExec;
-
-import javax.annotation.Nullable;
 
 public class HeoPlugin implements Plugin<Project> {
 
@@ -19,7 +19,7 @@ public class HeoPlugin implements Plugin<Project> {
 
     @Override
     public void apply(Project project) {
-        final HeoConfig config = project.getExtensions().create("heo", HeoConfig.class);
+        final HeoPluginConfig config = project.getExtensions().create("heo", HeoPluginConfig.class);
         project.getTasks().register("heoReport", JavaExec.class, task -> {
             task.setGroup("heo");
             task.setDescription("Execute heo-cli");
@@ -37,24 +37,33 @@ public class HeoPlugin implements Plugin<Project> {
 
             task.setMain("-jar");
             task.args(tempJar.getAbsolutePath());
-            task.args(List.of("-d", determineDirectory(project, config.getDirectoryPath()),
-                              "-p", determinePrefixPackage(project, config.getPrefixPackage()),
-                              "-o", determineDestination(project, config.getDestination())));
+            task.args(List.of(
+                    "-d", determineDirectory(project, config.getDirectoryPath()),
+                    "-p", determinePrefixPackage(project, config.getPrefixPackage()),
+                    "-o", determineDestination(project, config.getDestination()),
+                    "--failure-on-cycles", config.isFailureOnCycles()
+            ));
 
             tempJar.deleteOnExit();
         });
     }
 
     private static String determineDirectory(Project project, @Nullable String directoryPath) {
-        return StringUtils.isBlank(directoryPath) ? project.getProjectDir().getAbsolutePath() : directoryPath;
+        return StringUtils.isBlank(directoryPath)
+               ? project.getProjectDir().getAbsolutePath()
+               : directoryPath;
     }
 
     private static String determinePrefixPackage(Project project, @Nullable String prefixPackage) {
-        return StringUtils.isBlank(prefixPackage) ? project.getGroup().toString() : prefixPackage;
+        return StringUtils.isBlank(prefixPackage)
+               ? project.getGroup().toString()
+               : prefixPackage;
     }
 
     private static String determineDestination(Project project, @Nullable String destination) {
-        return StringUtils.isBlank(destination) ? Path.of(project.getProjectDir().getAbsolutePath(), REPORT_PATH, "index.png").toString() : destination;
+        return StringUtils.isBlank(destination)
+               ? Path.of(project.getProjectDir().getAbsolutePath(), REPORT_PATH, "index.png").toString()
+               : destination;
     }
 
 }

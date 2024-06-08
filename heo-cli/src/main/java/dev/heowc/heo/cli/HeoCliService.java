@@ -2,6 +2,8 @@ package dev.heowc.heo.cli;
 
 import java.util.List;
 
+import dev.heowc.heo.core.HeoException;
+
 import org.springframework.stereotype.Service;
 
 import dev.heowc.heo.core.Module;
@@ -29,11 +31,14 @@ public class HeoCliService {
         this.reportVisualizationService = reportVisualizationService;
     }
 
-    public void command(String directory, String rootPackage, String destination) {
+    public void command(String directory, String rootPackage, String destination, HeoConfig heoConfig) {
         final List<Module> modules = moduleLoaderService.loads(directory, rootPackage);
         final DependencyAnalysisResult result =
                 dependencyAnalysisService.analyzeProjectDependencies(modules, rootPackage);
         final String report = analysisReportService.createReport(result);
         reportVisualizationService.createFile(report, destination);
+        if (heoConfig.failureOnCycles() && result.hasCycle()) {
+            throw new HeoException("Cycles occurred");
+        }
     }
 }
