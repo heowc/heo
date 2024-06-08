@@ -9,15 +9,8 @@ buildscript {
     }
 }
 
-
 if (project.hasProperty('localPlugin')) {
     apply plugin: 'dev.heowc.heo'
-
-    java {
-        toolchain {
-            languageVersion = JavaLanguageVersion.of(17)
-        }
-    }
 
     heo {
         directoryPath = "${rootDir}/heo-core"
