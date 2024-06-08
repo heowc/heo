@@ -10,14 +10,19 @@ jobs:
   ci:
     permissions:
       pull-requests: write
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.on }}
+    strategy:
+      matrix:
+        os: [ macos-12, windows-latest, ubuntu-latest ]
+        version: [ 8, 11, 17, 21 ]
+      name: build-${{ matrix.os }}-jdk-${{ matrix.version }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK
         uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '21'      # See 'Options' section below for all supported versions
-          distribution: 'graalvm' # See 'Options' section below for all available distributions
+          java-version: ${{ matrix.version }}
+          distribution: 'graalvm'
       - name: Check Gradle Version
         run: |
           chmod +x gradlew
@@ -36,7 +41,10 @@ jobs:
         if: success()
         run: |
           JAR_FILE=$(ls -al ./heo-cli/build/libs/ | tail -1 | awk '{print $9}')
-          java -jar ./heo-cli/build/libs/$JAR_FILE -d $(pwd) -p dev.heowc.heo.core -o ${{ github.event.pull_request.number }}.png
+          java -jar ./heo-cli/build/libs/$JAR_FILE \
+              -d $(pwd) \
+              -p dev.heowc.heo.core \
+              -o ${{ github.event.pull_request.number }}.png
       - name: Upload self report file
         if: success() && github.event.pull_request.number != ''
         uses: actions/upload-artifact@v4
