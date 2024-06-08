@@ -31,7 +31,7 @@ public class ReportVisualizationService {
             final Field field = Graphviz.class.getDeclaredField("availableEngines");
             field.setAccessible(true);
             return  (List<GraphvizEngine>) field.get(graphviz);
-        } catch (Exception e) {
+        } catch (Throwable e) {
             logger.debug("Could not detect available engines", e);
         }
         return List.of();
