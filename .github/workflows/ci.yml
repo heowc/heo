@@ -48,7 +48,7 @@ jobs:
         if: success() && github.event.pull_request.number != ''
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ github.event.pull_request.number }}.png
+          path: ${{ github.event.pull_request.number }}-${{ github.ref }}-${{ matrix.os }}-jdk-${{ matrix.version }}.png
           name: interg-reports
           retention-days: 7
 
