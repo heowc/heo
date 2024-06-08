@@ -26,11 +26,10 @@ public class ReportVisualizationService {
 
     private static List<GraphvizEngine> detectAvailableEngines() {
         try {
-            final Graphviz graphviz = Graphviz.fromString("");
-            graphviz.useEngine(List.of());
+            Graphviz.useDefaultEngines();
             final Field field = Graphviz.class.getDeclaredField("availableEngines");
             field.setAccessible(true);
-            return  (List<GraphvizEngine>) field.get(graphviz);
+            return  (List<GraphvizEngine>) field.get(null);
         } catch (Throwable e) {
             logger.debug("Could not detect available engines", e);
         }
