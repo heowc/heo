@@ -12,8 +12,8 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        os: [ macos-12, ubuntu-latest ]
-        version: [ 11, 17, 21 ]
+        os: [ macos-12, windows-latest, ubuntu-latest ]
+        version: [ 17, 21 ]
     runs-on: ${{ matrix.os }}
     name: build-${{ matrix.os }}-jdk-${{ matrix.version }}
     steps:
