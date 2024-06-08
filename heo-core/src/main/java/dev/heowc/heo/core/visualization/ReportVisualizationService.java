@@ -21,7 +21,7 @@ public class ReportVisualizationService {
     private static final Logger logger = LoggerFactory.getLogger(ReportVisualizationService.class);
 
     static {
-        logger.info("Available engines: {}", detectAvailableEngines());
+        logger.debug("Available engines: {}", detectAvailableEngines());
     }
 
     private static List<GraphvizEngine> detectAvailableEngines() {
