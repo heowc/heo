@@ -2,8 +2,10 @@ package dev.heowc.heo.core.visualization;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.List;
 
-import guru.nidi.graphviz.engine.GraphvizJdkEngine;
+import guru.nidi.graphviz.engine.GraphvizEngine;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,22 @@ import guru.nidi.graphviz.engine.Graphviz;
 public class ReportVisualizationService {
 
     private static final Logger logger = LoggerFactory.getLogger(ReportVisualizationService.class);
+
+    static {
+        logger.debug("Available engines: {}", detectAvailableEngines());
+    }
+
+    private static List<GraphvizEngine> detectAvailableEngines() {
+        try {
+            Graphviz.useDefaultEngines();
+            final Field field = Graphviz.class.getDeclaredField("availableEngines");
+            field.setAccessible(true);
+            return  (List<GraphvizEngine>) field.get(null);
+        } catch (Throwable e) {
+            logger.debug("Could not detect available engines", e);
+        }
+        return List.of();
+    }
 
     public void createFile(String report, String destination) {
         try {
