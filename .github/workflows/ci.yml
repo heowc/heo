@@ -43,12 +43,12 @@ jobs:
           java -jar ./heo-cli/build/libs/$JAR_FILE \
               -d $(pwd) \
               -p dev.heowc.heo.core \
-              -o ${{ github.event.pull_request.number }}-${{ steps.get_commit.outputs.commit_hash }}-${{ matrix.os }}-jdk-${{ matrix.version }}.png
+              -o ${{ github.event.pull_request.number }}-${{ GITHUB_SHA }}-${{ matrix.os }}-jdk-${{ matrix.version }}.png
       - name: Upload self report file
         if: success() && github.event.pull_request.number != ''
         uses: actions/upload-artifact@v4
         with:
-          path: ${{ github.event.pull_request.number }}-${{ steps.get_commit.outputs.commit_hash }}-${{ matrix.os }}-jdk-${{ matrix.version }}.png
+          path: ${{ github.event.pull_request.number }}-${{ GITHUB_SHA }}-${{ matrix.os }}-jdk-${{ matrix.version }}.png
           name: interg-reports
           retention-days: 7
 
