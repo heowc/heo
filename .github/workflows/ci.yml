@@ -15,7 +15,7 @@ jobs:
         os: [ macos-12, ubuntu-latest ]
         version: [ 17, 21 ]
     runs-on: ${{ matrix.os }}
-    name: build-${{ matrix.os }}-jdk-${{ matrix.version }}
+    name: ci-${{ matrix.os }}-jdk-${{ matrix.version }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK
