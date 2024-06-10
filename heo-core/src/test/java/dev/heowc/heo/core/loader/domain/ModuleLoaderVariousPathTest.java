@@ -16,9 +16,9 @@ class ModuleLoaderVariousPathTest {
 
     @Test
     void absolutePath() throws IOException {
-        final Path cycleIntergationTestProjectPath = Path.of(rootDir, "heo-core").toAbsolutePath();
+        final Path absolutePath = Path.of(rootDir, "heo-core").toAbsolutePath();
 
-        final List<Module> modules = new ModuleLoader(cycleIntergationTestProjectPath.toString(),
+        final List<Module> modules = new ModuleLoader(absolutePath.toString(),
                                                       "dev.heowc.heo.core").loadModules();
 
         assertThat(modules).isNotEmpty();
@@ -26,9 +26,9 @@ class ModuleLoaderVariousPathTest {
 
     @Test
     void relativePath() throws IOException {
-        final Path cycleIntergationTestProjectPath = Path.of("");
+        final Path relativePath = Path.of("");
 
-        final List<Module> modules = new ModuleLoader(cycleIntergationTestProjectPath.toString(),
+        final List<Module> modules = new ModuleLoader(relativePath.toString(),
                                                       "dev.heowc.heo.core").loadModules();
 
         assertThat(modules).isNotEmpty();
