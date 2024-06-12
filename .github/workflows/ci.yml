@@ -57,5 +57,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: '*/build/reports/tests'
-          name: test-reports
+          name: test-reports-${{ github.event.pull_request.number }}-${{ github.run_id }}-${{ matrix.os }}-jdk-${{ matrix.version }}
           retention-days: 7

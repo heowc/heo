@@ -24,7 +24,7 @@ public class ModuleLoader {
     private final String rootPackage;
 
     public ModuleLoader(String projectDirectory, String rootPackage) {
-        this.projectPath = Path.of(projectDirectory);
+        this.projectPath = Path.of(projectDirectory).toAbsolutePath();
         this.rootPackage = rootPackage;
     }
 
