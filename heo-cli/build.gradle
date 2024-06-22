@@ -1,11 +1,11 @@
 plugins {
     id 'java-library'
-    id 'org.springframework.boot' version '3.2.4'
+    id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
 ext {
-    set('springShellVersion', "3.2.3")
+    set('springShellVersion', "3.3.0")
 }
 
 dependencies {
