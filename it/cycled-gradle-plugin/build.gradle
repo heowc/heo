@@ -17,6 +17,7 @@ if (project.hasProperty('localPlugin')) {
         directoryPath = "${rootDir}/it/cycled-gradle-plugin"
         prefixPackage = "dev.heowc.heo.it.cycled"
         failureOnCycles = true
+        logging = [ 'root=DEBUG' ]
     }
 
     test {

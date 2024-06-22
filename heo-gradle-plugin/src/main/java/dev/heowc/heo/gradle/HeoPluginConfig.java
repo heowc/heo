@@ -1,11 +1,14 @@
 package dev.heowc.heo.gradle;
 
+import java.util.List;
+
 public class HeoPluginConfig {
 
     private String directoryPath;
     private String prefixPackage;
     private String destination;
     private boolean failureOnCycles;
+    private List<String> logging;
 
     public String getDirectoryPath() {
         return directoryPath;
@@ -37,5 +40,13 @@ public class HeoPluginConfig {
 
     public void setFailureOnCycles(boolean failureOnCycles) {
         this.failureOnCycles = failureOnCycles;
+    }
+
+    public List<String> getLogging() {
+        return logging;
+    }
+
+    public void setLogging(List<String> logging) {
+        this.logging = logging;
     }
 }

@@ -2,10 +2,14 @@ package dev.heowc.heo.gradle;
 
 import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -37,15 +41,19 @@ public class HeoPlugin implements Plugin<Project> {
 
             task.setMain("-jar");
             task.args(tempJar.getAbsolutePath());
-            task.args(List.of(
-                    "-d", determineDirectory(project, config.getDirectoryPath()),
-                    "-p", determinePrefixPackage(project, config.getPrefixPackage()),
-                    "-o", determineDestination(project, config.getDestination()),
-                    "--failure-on-cycles", config.isFailureOnCycles()
-            ));
+            task.args(arguments(project, config));
 
             tempJar.deleteOnExit();
         });
+    }
+
+    private List<? extends Serializable> arguments(Project project, HeoPluginConfig config) {
+        return Stream.concat(Stream.of("-d", determineDirectory(project, config.getDirectoryPath()),
+                                       "-p", determinePrefixPackage(project, config.getPrefixPackage()),
+                                       "-o", determineDestination(project, config.getDestination()),
+                                       "--failure-on-cycles", String.valueOf(config.isFailureOnCycles())),
+                             logging(config.getLogging()))
+                     .toList();
     }
 
     private static String determineDirectory(Project project, @Nullable String directoryPath) {
@@ -64,6 +72,14 @@ public class HeoPlugin implements Plugin<Project> {
         return StringUtils.isBlank(destination)
                ? Path.of(project.getProjectDir().getAbsolutePath(), REPORT_PATH, "index.png").toString()
                : destination;
+    }
+
+    private Stream<String> logging(@Nullable List<String> logging) {
+        return Stream.ofNullable(logging)
+                     .filter(Objects::nonNull)
+                     .flatMap(Collection::stream)
+                     .filter(Objects::nonNull)
+                     .map(it -> "--logging.level." + it);
     }
 
 }

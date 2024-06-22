@@ -16,6 +16,7 @@ if (project.hasProperty('localPlugin')) {
     heo {
         directoryPath = "${rootDir}/heo-core"
         prefixPackage = "dev.heowc.heo.core"
+        logging = [ 'root=DEBUG' ]
     }
 
     test {
@@ -24,14 +25,10 @@ if (project.hasProperty('localPlugin')) {
 
     tasks.register('pluginTest') {
         doLast {
-            var failure = false
             try {
                 tasks.heoReport.exec()
             } catch (Exception e) {
-                failure = true
-            }
-            if (failure) {
-                throw new IllegalStateException("The task did not succeed")
+                throw new IllegalStateException("The task did not succeed", e)
             }
         }
     }
