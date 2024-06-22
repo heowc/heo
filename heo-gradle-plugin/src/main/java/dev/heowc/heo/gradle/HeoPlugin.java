@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.logging.LogLevel;
 import org.gradle.api.tasks.JavaExec;
 
 public class HeoPlugin implements Plugin<Project> {
@@ -52,7 +53,7 @@ public class HeoPlugin implements Plugin<Project> {
                                        "-p", determinePrefixPackage(project, config.getPrefixPackage()),
                                        "-o", determineDestination(project, config.getDestination()),
                                        "--failure-on-cycles", String.valueOf(config.isFailureOnCycles())),
-                             logging(config.getLogging()))
+                             logging(project, config.getLogging()))
                      .toList();
     }
 
@@ -74,7 +75,10 @@ public class HeoPlugin implements Plugin<Project> {
                : destination;
     }
 
-    private Stream<String> logging(@Nullable List<String> logging) {
+    private Stream<String> logging(Project project, @Nullable List<String> logging) {
+        if (project.getGradle().getStartParameter().getLogLevel() == LogLevel.DEBUG) {
+            return Stream.of("--logging.level.root=DEBUG");
+        }
         return Stream.ofNullable(logging)
                      .filter(Objects::nonNull)
                      .flatMap(Collection::stream)
