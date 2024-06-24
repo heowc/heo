@@ -16,7 +16,7 @@ public class DomainGraph extends DirectedMultigraph<String, DomainEdge> {
 
     public void addEdge(Map<String, Set<String>> packages) {
         packages.forEach((target, sources) -> {
-            sources.forEach(source -> addEdge(target, source, new DomainEdge(target, source)));
+            sources.forEach(source -> addEdge(source, target, new DomainEdge(target, source)));
         });
     }
 }
