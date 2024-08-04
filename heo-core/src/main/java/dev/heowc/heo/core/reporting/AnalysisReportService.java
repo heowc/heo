@@ -33,7 +33,10 @@ public class AnalysisReportService {
         exporter.setEdgeAttributeProvider(edge -> {
             final Map<String, Attribute> attributes = new LinkedHashMap<>();
             if (cycled.contains(edge.getTarget()) && cycled.contains(edge.getSource())) {
-                attributes.put("color", DefaultAttribute.createAttribute("red"));
+                final Set<String> targets = result.getCycleDetector().findCyclesContainingVertex(edge.getSource());
+                if (targets.contains(edge.getTarget())) {
+                    attributes.put("color", DefaultAttribute.createAttribute("red"));
+                }
             }
             return attributes;
         });
