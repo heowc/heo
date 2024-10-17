@@ -42,11 +42,13 @@ $ java -jar heo-cli-0.0.2.jar -d /Users/heowc/Projects/heo-core -p dev.heowc.heo
 
 A gradle plugin is provided for easier use.
 
+https://plugins.gradle.org/plugin/dev.heowc.heo
+
 ## usage
 
 ```groovy
 plugins {
-    id "dev.heowc.deo" version "0.0.2"
+    id "dev.heowc.deo" version "{LATEST_VERSION}"
 }
 
 heo {
