@@ -77,13 +77,13 @@ public class HeoPlugin implements Plugin<Project> {
 
     private Stream<String> logging(Project project, @Nullable List<String> logging) {
         if (project.getGradle().getStartParameter().getLogLevel() == LogLevel.DEBUG) {
-            return Stream.of("--logging.level.root=DEBUG");
+            return Stream.of("-Dlogging.level.root=DEBUG");
         }
         return Stream.ofNullable(logging)
                      .filter(Objects::nonNull)
                      .flatMap(Collection::stream)
                      .filter(Objects::nonNull)
-                     .map(it -> "--logging.level." + it);
+                     .map(it -> "-Dlogging.level." + it);
     }
 
 }

@@ -1,16 +1,16 @@
 plugins {
     id 'java-library'
-    id 'org.springframework.boot' version '3.3.1'
-    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
 }
 
 ext {
-    set('springShellVersion', "3.3.1")
+    set('springShellVersion', "3.3.3")
 }
 
 dependencies {
     implementation 'org.springframework.shell:spring-shell-starter'
-    implementation 'org.apache.commons:commons-lang3:3.14.0'
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
 
 //    implementation 'org.graalvm.polyglot:polyglot:24.0.1'
 //    runtimeOnly 'org.graalvm.polyglot:js-community:24.0.1'
