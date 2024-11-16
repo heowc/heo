@@ -12,7 +12,7 @@ jobs:
       pull-requests: write
     strategy:
       matrix:
-        os: [ macos-12, ubuntu-latest ]
+        os: [ macos-latest, ubuntu-latest ]
         version: [ 17, 21 ]
     runs-on: ${{ matrix.os }}
     name: ci-${{ matrix.os }}-jdk-${{ matrix.version }}
