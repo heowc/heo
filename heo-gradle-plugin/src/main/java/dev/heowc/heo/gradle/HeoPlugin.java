@@ -25,7 +25,7 @@ import org.gradle.api.tasks.JavaExec;
 public class HeoPlugin implements Plugin<Project> {
 
     private static final String REPORT_PATH = "build/reports/heo";
-    private static final Pattern DOT_PATTERN = Pattern.compile(".");
+    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
     private static final Pattern EQ_PATTERN = Pattern.compile("=");
 
     @Override
@@ -81,8 +81,8 @@ public class HeoPlugin implements Plugin<Project> {
 
     private static Map<String, String> environments(Project project, HeoPluginConfig config) {
         return logging(project, config.getLogging())
-                .map(it -> DOT_PATTERN.matcher(it).replaceAll("_"))
                 .map(String::toUpperCase)
+                .map(it -> DOT_PATTERN.matcher(it).replaceAll("_"))
                 .map(it -> {
                     final String[] keyValue = EQ_PATTERN.split(it);
                     return Map.entry(keyValue[0], keyValue[1]);
@@ -91,13 +91,13 @@ public class HeoPlugin implements Plugin<Project> {
 
     private static Stream<String> logging(Project project, @Nullable List<String> logging) {
         if (project.getGradle().getStartParameter().getLogLevel() == LogLevel.DEBUG) {
-            return Stream.of("-Dlogging.level.root=DEBUG");
+            return Stream.of("logging.level.root=DEBUG");
         }
         return Stream.ofNullable(logging)
                      .filter(Objects::nonNull)
                      .flatMap(Collection::stream)
                      .filter(Objects::nonNull)
-                     .map(it -> "-Dlogging.level." + it);
+                     .map(it -> "logging.level." + it);
     }
 
 }
