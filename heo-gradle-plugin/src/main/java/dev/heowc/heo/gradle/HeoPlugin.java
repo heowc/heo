@@ -8,7 +8,11 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
@@ -21,6 +25,8 @@ import org.gradle.api.tasks.JavaExec;
 public class HeoPlugin implements Plugin<Project> {
 
     private static final String REPORT_PATH = "build/reports/heo";
+    private static final Pattern DOT_PATTERN = Pattern.compile("\\.");
+    private static final Pattern EQ_PATTERN = Pattern.compile("=");
 
     @Override
     public void apply(Project project) {
@@ -43,18 +49,16 @@ public class HeoPlugin implements Plugin<Project> {
             task.setMain("-jar");
             task.args(tempJar.getAbsolutePath());
             task.args(arguments(project, config));
-
+            task.environment(environments(project, config));
             tempJar.deleteOnExit();
         });
     }
 
-    private List<? extends Serializable> arguments(Project project, HeoPluginConfig config) {
-        return Stream.concat(Stream.of("-d", determineDirectory(project, config.getDirectoryPath()),
-                                       "-p", determinePrefixPackage(project, config.getPrefixPackage()),
-                                       "-o", determineDestination(project, config.getDestination()),
-                                       "--failure-on-cycles", String.valueOf(config.isFailureOnCycles())),
-                             logging(project, config.getLogging()))
-                     .toList();
+    private static List<? extends Serializable> arguments(Project project, HeoPluginConfig config) {
+        return List.of("-d", determineDirectory(project, config.getDirectoryPath()),
+                       "-p", determinePrefixPackage(project, config.getPrefixPackage()),
+                       "-o", determineDestination(project, config.getDestination()),
+                       "--failure-on-cycles", String.valueOf(config.isFailureOnCycles()));
     }
 
     private static String determineDirectory(Project project, @Nullable String directoryPath) {
@@ -75,15 +79,25 @@ public class HeoPlugin implements Plugin<Project> {
                : destination;
     }
 
-    private Stream<String> logging(Project project, @Nullable List<String> logging) {
+    private static Map<String, String> environments(Project project, HeoPluginConfig config) {
+        return logging(project, config.getLogging())
+                .map(String::toUpperCase)
+                .map(it -> DOT_PATTERN.matcher(it).replaceAll("_"))
+                .map(it -> {
+                    final String[] keyValue = EQ_PATTERN.split(it);
+                    return Map.entry(keyValue[0], keyValue[1]);
+                }).collect(Collectors.toUnmodifiableMap(Entry::getKey, Entry::getValue));
+    }
+
+    private static Stream<String> logging(Project project, @Nullable List<String> logging) {
         if (project.getGradle().getStartParameter().getLogLevel() == LogLevel.DEBUG) {
-            return Stream.of("-Dlogging.level.root=DEBUG");
+            return Stream.of("logging.level.root=DEBUG");
         }
         return Stream.ofNullable(logging)
                      .filter(Objects::nonNull)
                      .flatMap(Collection::stream)
                      .filter(Objects::nonNull)
-                     .map(it -> "-Dlogging.level." + it);
+                     .map(it -> "logging.level." + it);
     }
 
 }

@@ -4,24 +4,32 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.List;
 
-import dev.heowc.heo.core.Module;
-import dev.heowc.heo.core.loader.domain.ModuleLoader;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import com.github.javaparser.utils.ParserCollectionStrategy;
+
+import dev.heowc.heo.core.Module;
+import dev.heowc.heo.core.loader.ModuleLoaderConfig;
+import dev.heowc.heo.core.loader.domain.ModuleLoader;
 
 @Service
 public class ModuleLoaderService {
 
     private final Logger logger = LoggerFactory.getLogger(ModuleLoaderService.class);
+    private final ParserCollectionStrategy parserCollectionStrategy;
 
-    public List<Module> loads(String projectDirectory, String rootPackage) {
+    public ModuleLoaderService(ParserCollectionStrategy parserCollectionStrategy) {
+        this.parserCollectionStrategy = parserCollectionStrategy;
+    }
+
+    public List<Module> loads(ModuleLoaderConfig config) {
         try {
-            logger.info("Loading " + rootPackage + " from " + projectDirectory);
-            return new ModuleLoader(projectDirectory, rootPackage).loadModules();
+            logger.info("Loading " + config.rootPackage() + " from " + config.projectDirectory());
+            return new ModuleLoader(config, parserCollectionStrategy).loadModules();
         } catch (IOException e) {
-            logger.error("Error while loading " + rootPackage + " from " + projectDirectory, e);
+            logger.error("Error while loading " + config.rootPackage() + " from " + config.projectDirectory(), e);
             throw new UncheckedIOException(e);
         }
     }

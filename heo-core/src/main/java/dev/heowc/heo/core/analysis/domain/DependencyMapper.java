@@ -13,6 +13,8 @@ import java.util.stream.Stream;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
@@ -28,7 +30,29 @@ import dev.heowc.heo.core.Module;
 @DomainService
 public class DependencyMapper {
 
-    private final JavaParser javaParser = new JavaParser();
+    private final Logger logger = LoggerFactory.getLogger(DependencyMapper.class);
+    private final JavaParser javaParser;
+
+    public DependencyMapper(JavaParser javaParser) {
+        this.javaParser = javaParser;
+    }
+
+    public DomainGraph mapDependencies(List<Module> modules, String rootPackage) {
+        final DomainGraph graph = new DomainGraph();
+        final GroupIdProvider groupIdProvider = new DefaultGroupIdProvider();
+        final Map<String, Module> moduleGroup = modules.stream()
+                                                       .collect(Collectors.toUnmodifiableMap(Module::getIdentity,
+                                                                                             Function.identity()));
+        final Map<String, Set<String>> result =
+                modules.stream()
+                       .map(it -> toDependentModule(rootPackage, it, moduleGroup, groupIdProvider))
+                       .peek(it -> logger.debug("module={}, dependent={}",
+                                                it.getKey(), it.getValue()))
+                       .collect(Collectors.toUnmodifiableMap(Pair::getKey, Pair::getValue, merge()));
+        graph.addVertex(result);
+        graph.addEdge(result);
+        return graph;
+    }
 
     private static String toGroupId(GroupIdProvider groupIdProvider, String rootPackage, Module module) {
         return groupIdProvider.groupId(rootPackage, module);
@@ -40,22 +64,6 @@ public class DependencyMapper {
             merged.addAll(deps2);
             return merged;
         };
-    }
-
-    public DomainGraph mapDependencies(List<Module> modules, String rootPackage) {
-        final DomainGraph graph = new DomainGraph();
-        final GroupIdProvider groupIdProvider = new DefaultGroupIdProvider();
-        final Map<String, Module> moduleGroup = modules.stream()
-                                                       .collect(Collectors.toUnmodifiableMap(Module::getIdentity,
-                                                                                             Function.identity()));
-        final Map<String, Set<String>> result = modules.stream()
-                                                       .map(it -> toDependentModule(rootPackage, it, moduleGroup,
-                                                                                    groupIdProvider))
-                                                       .collect(Collectors.toUnmodifiableMap(Pair::getKey,
-                                                                                             Pair::getValue, merge()));
-        graph.addVertex(result);
-        graph.addEdge(result);
-        return graph;
     }
 
     private Pair<String, Set<String>> toDependentModule(String rootPackage,
