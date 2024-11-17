@@ -35,7 +35,7 @@ jobs:
       - name: Plugin Test
         run: |
           ./gradlew :heo-gradle-plugin:publishToMavenLocal
-          ./gradlew -PlocalPlugin pluginTest
+          ./gradlew --debug -PlocalPlugin pluginTest
       - name: Create self report file
         if: success()
         run: |
