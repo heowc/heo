@@ -20,6 +20,7 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ParseStart;
 import com.github.javaparser.Providers;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithName;
 
@@ -90,15 +91,17 @@ public class DependencyMapper {
 
     private Stream<ImportDeclaration> parseImports(Module module) {
         try {
-            final ParseResult<ImportDeclaration> parsed =
-                    javaParser.parse(ParseStart.IMPORT_DECLARATION,
+            final ParseResult<CompilationUnit> parsed =
+                    javaParser.parse(ParseStart.COMPILATION_UNIT,
                                      Providers.provider(module.getPath(),
                                                         javaParser.getParserConfiguration().getCharacterEncoding()));
 
             if (!parsed.isSuccessful()) {
                 return Stream.empty();
             }
-            return parsed.getResult().stream();
+            return parsed.getResult().orElseThrow()
+                         .getImports()
+                         .stream();
         } catch (IOException e) {
             return Stream.empty();
         }
