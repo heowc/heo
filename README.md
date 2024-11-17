@@ -48,7 +48,7 @@ https://plugins.gradle.org/plugin/dev.heowc.heo
 
 ```groovy
 plugins {
-    id "dev.heowc.Heo" version "{LATEST_VERSION}"
+    id "dev.heowc.heo" version "{LATEST_VERSION}"
 }
 
 heo {

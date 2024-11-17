@@ -5,7 +5,7 @@ plugins {
 
 subprojects {
     group = 'dev.heowc.heo'
-    version = '0.0.7-SNAPSHOT'
+    version = '0.0.7'
 
     java {
         sourceCompatibility = '17'
