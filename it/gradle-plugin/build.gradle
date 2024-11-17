@@ -27,6 +27,7 @@ if (project.hasProperty('localPlugin')) {
         doLast {
             try {
                 tasks.heoReport.exec()
+                println("heoReport task successful")
             } catch (Exception e) {
                 throw new IllegalStateException("The task did not succeed", e)
             }

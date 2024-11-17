@@ -29,7 +29,8 @@ if (project.hasProperty('localPlugin')) {
             var failure = false
             try {
                 tasks.heoReport.exec()
-            } catch (Exception e) {
+            } catch (Exception ignored) {
+                println("heoReport task failed")
                 failure = true
             }
             if (!failure) {
